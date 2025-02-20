@@ -1,0 +1,31 @@
+services:
+  php:
+    image: php:8.3-fpm
+    restart: always
+    expose:
+      - 9000
+    working_dir: /usr/src/app
+    user: 1000:1000
+    volumes:
+      - ./src:/usr/src/app
+
+  nginx:
+    image: nginx:1.27.4
+    command: /bin/bash -c "envsubst '$$NGINX_PORT $$NGINX_ROOT $$PHP_HOST $$PHP_PORT' < /etc/nginx/site.conf.tmpl > /etc/nginx/sites-available/site.conf && nginx -g 'daemon off;'"
+    restart: always
+    ports: 
+      - 8000:8000
+    environment:
+      - NGINX_PORT=8000
+      - NGINX_ROOT=/usr/src/app
+      - PHP_HOST=php
+      - PHP_PORT=9000
+    depends_on:
+      - php
+    links:
+      - php:php
+    volumes:
+      - ./src:/usr/src/app:ro
+      - /etc/nginx/sites-available
+      - ./etc/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./etc/nginx/site.conf.tmpl:/etc/nginx/site.conf.tmpl:ro
