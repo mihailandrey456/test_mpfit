@@ -6,6 +6,7 @@ use App\Http\Requests\SaveProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use App\Services\ProductService;
+use Exception;
 
 class ProductController extends Controller
 {
@@ -58,7 +59,7 @@ class ProductController extends Controller
 		try {
 			$this->service->updateProduct($product, $request->toDto());
 		} catch (Exception $e) {
-			return redirect(route('products.edit'));
+			return redirect(route('products.edit', $product));
 		}
 		return redirect(route('products.index'));
 	}

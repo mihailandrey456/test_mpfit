@@ -43,6 +43,6 @@
 			@error('comment')<div>{{ $message }}</div>@enderror
 		</div>
 
-		<button type="submit">Создать</button>
+		<button type="submit">Обновить</button>
 	</form>
 @endsection

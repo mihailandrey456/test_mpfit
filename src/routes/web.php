@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,3 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [ProductController::class, 'index']);
 
 Route::resource('products', ProductController::class);
+
+Route::resource('orders', OrderController::class)->only(['index', 'create', 'store', 'show']);
+Route::prefix('orders')->group(function() {
+    Route::post('{order}/complete', [OrderController::class, 'complete'])
+        ->name('orders.complete');
+});
