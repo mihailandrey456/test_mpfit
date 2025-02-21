@@ -10,5 +10,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Category extends Model
 {
-
+	public function __toString(): string
+	{
+		return $this->name;
+	}
 }
